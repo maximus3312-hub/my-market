@@ -1,26 +1,21 @@
+
 {
-  "background_color": "#0c1423",
-  "dir": "ltr",
+  "id": "/my-market/",
+  "name": "My Market",
+  "short_name": "My Market",
+  "description": "주식, 코인, 환율, 아파트 시세를 한눈에 확인하는 나만의 자산 관리 앱",
+  "start_url": "/my-market/",
+  "scope": "/my-market/",
   "display": "standalone",
-  "name": "maximus3312-hub.github",
-  "orientation": "any",
-  "scope": "/",
-  "short_name": "maximus3312-hub.github",
-  "start_url": "/",
+  "background_color": "#0c1423",
   "theme_color": "#101827",
+  "lang": "ko-KR",
   "icons": [
     {
-      "src": "https://maximus3312-hub.github.io/my-market/icon-192.png",
-      "isSquare": false,
-      "isPng": true,
-      "isWebp": false,
-      "isJpg": false,
-      "width": 0,
-      "is512x512": false,
-      "is256x256": false,
-      "is192x192": false
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
     }
-  ],
-  "id": "/my-market/",
-  "description": "주식, 코인, 환율, 아파트 시세를 한눈에 확인하는 나만의 자산 관리 앱"
+  ]
 }
