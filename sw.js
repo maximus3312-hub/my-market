@@ -1,6 +1,5 @@
-// This is the "Offline copy of pages" service worker
 
-const CACHE = "pwabuilder-offline";
+const CACHE = "my-market-v2";
 
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 
@@ -11,7 +10,14 @@ self.addEventListener("message", (event) => {
 });
 
 workbox.routing.registerRoute(
-  new RegExp('/*'),
+  ({request}) => request.mode === 'navigate',
+  new workbox.strategies.NetworkFirst({
+    cacheName: CACHE
+  })
+);
+
+workbox.routing.registerRoute(
+  ({request}) => request.destination === 'script' || request.destination === 'style',
   new workbox.strategies.StaleWhileRevalidate({
     cacheName: CACHE
   })
