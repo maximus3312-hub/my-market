@@ -1,0 +1,185 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101827"><title>My Market v28</title><link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><style>*{box-sizing:border-box}body{margin:0;background:#0c1423;color:#f4f7fc;font:15px system-ui,'Malgun Gothic',sans-serif}.wrap{max-width:650px;margin:auto;padding:22px 16px 50px}h1{font-size:28px;margin:5px 0}small,.muted{color:#9eabc1}.top{display:flex;justify-content:space-between;align-items:center}.pill{background:#193149;color:#80d8c0;border-radius:99px;padding:7px 10px;font-size:12px}.panel{background:#182438;border:1px solid #273851;border-radius:17px;padding:16px;margin-top:12px}.name{font-weight:700;font-size:17px}.name-link{color:#f4f7fc;text-decoration:none;display:inline-flex;align-items:center;gap:5px}.name-link:hover,.name-link:focus{color:#8eb9ff;text-decoration:underline}.name-link:focus-visible{outline:2px solid #8eb9ff;outline-offset:3px;border-radius:3px}.external-mark{font-size:13px;color:#8eb9ff}.code{font-size:12px;color:#9eabc1;margin-top:3px}.price{font-size:27px;font-weight:750;margin-top:12px}.usd-converted{font-size:18px;font-weight:650;color:#c2e5ff;margin-top:5px}.krw-converted{font-size:18px;font-weight:650;color:#c2e5ff;margin-top:5px}.krw-note{font-size:11px;color:#9eabc1;margin-top:3px}.rise{color:#ff777e}.fall{color:#6eacff}.row{display:flex;align-items:center;justify-content:space-between;gap:8px}.move-controls{display:flex;align-items:center;gap:3px;flex-shrink:0}.move-btn{border:1px solid #425978;background:#263b58;color:#e7f1ff;border-radius:8px;min-width:34px;min-height:36px;cursor:pointer;font-size:18px}.move-btn:disabled{opacity:.3;cursor:default}.remove{border:0;background:transparent;color:#8c9db8;font-size:21px;cursor:pointer;padding:5px}button,select,input{font:inherit}input{background:#17253a;color:white;border:1px solid #43536d;border-radius:10px;padding:11px;width:100%}.entry{margin-top:10px;display:grid;gap:8px}.entry label{font-size:12px;color:#aebed6}.entrygrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.action.secondary{background:#31445f}.errorline{color:#ffb6a9;font-size:12px;margin-top:8px}button,select{font:inherit}button.action{background:#3e7eff;color:white;border:0;border-radius:10px;padding:12px 16px;font-weight:700;cursor:pointer}select{background:#17253a;color:white;border:1px solid #43536d;border-radius:10px;padding:11px;min-width:0;flex:1}.controls{display:flex;gap:8px;margin-top:16px}.empty{padding:24px;text-align:center;color:#9eabc1}.hint{font-size:12px;line-height:1.6;color:#9eabc1;margin-top:16px}.status{font-size:12px;color:#9eabc1;margin:8px 0 16px}.apt-tag{font-size:12px;color:#9eabc1;margin-top:8px}.apt-note{font-size:13px;color:#c4d2e6;line-height:1.65;margin-top:12px}.apt-link{display:inline-block;margin-top:10px;color:#88b8ff;font-size:13px}.apt-price{font-size:23px;font-weight:750;margin-top:12px} .stocklinks{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.stocklinks a{color:#8eb9ff;border:1px solid #425978;padding:9px 12px;border-radius:9px;text-decoration:none;font-size:13px}.source{font-size:11px;color:#a8b7cc;margin-top:8px}</style></head><body><main class="wrap"><div class="top"><div><h1>📈 My Market</h1><small>코인 원화·달러 · 환율 · 주식 · ETF · 아파트</small></div><span class="pill">공개 시세</span></div><div class="controls"><button class="action secondary" id="reload">↻ 새로고침</button></div><section class="panel"><div class="name">🔎 관심 종목·아파트 추가</div><p class="hint">주식·ETF·코인은 이름으로 검색해 추가하고, 아파트는 KB부동산 단지 링크로 등록할 수 있어.</p><div class="entry"><select id="searchCategory" aria-label="검색 종류"><option value="market">주식 · ETF · 코인</option><option value="apt">🏠 아파트</option></select><input id="searchName" placeholder="예: 애플, KODEX 200, 이더리움" aria-label="종목 또는 아파트 이름 검색"><button class="action" id="searchButton">검색</button><div id="searchResults" role="status"></div></div></section><details class="panel"><summary style="cursor:pointer;font-weight:700">＋ 종목코드를 알고 있을 때 직접 등록 (선택사항)</summary><div class="entry"><label>종류</label><select id="customType"><option value="stockKR">국내 주식 / ETF</option><option value="stockUS">미국 주식 / ETF</option><option value="crypto">업비트 코인</option><option value="apt">아파트 (가격 직접 입력)</option></select><label>이름</label><input id="customName" placeholder="예: KODEX 200"><label id="customCodeLabel">종목코드 (국내 6자리 / 미국 영문 티커 / 코인 BTC)</label><input id="customCode" placeholder="예: 069500"><div id="aptExtra" style="display:none" class="entry"><label>전용면적 (㎡)</label><input id="aptArea" placeholder="예: 84"><label>최근 확인한 거래가격 (원)</label><input id="aptPrice" inputmode="numeric" placeholder="예: 1140000000"><label>계약일 (선택)</label><input id="aptDate" type="date"></div><button class="action" id="addCustom">직접 추가하기</button><div id="formMessage" class="errorline" role="status"></div><small>시세 제공처에 없는 종목은 가격 조회에 실패할 수 있습니다. KB부동산 단지 링크로 등록한 아파트는 KB시세 자동 조회를 시도합니다.</small></div></details><p class="hint" style="margin-top:10px;margin-bottom:0">종목·아파트 이름을 누르면 해당 시세 페이지가 열리고, ↑ ↓ 버튼으로 표시 순서를 변경할 수 있어요. 순서는 자동 저장됩니다.</p><p class="status" id="status">시세 불러오는 중...</p><section id="cards"></section><p class="hint">코인 달러 환산은 업비트 원화 시세 ÷ 공개 일일 기준환율로 계산한 참고 금액이며 해외 거래소 달러 시세와 다를 수 있습니다. 미국 주식 원화 환산은 표시된 달러 주가 × 공개 일일 기준환율로 계산한 1주당 참고 금액이며 실시간 환전가가 아닙니다. 현재 버전은 선택한 업비트 코인 원화 시세(30초 갱신)와 공개 환율(1시간마다 재확인), 그리고 주식 웹 시세 시험 연결(5분 갱신)을 포함합니다. KB부동산 주소가 연결된 아파트는 앱을 열 때와 하루마다 시세 조회를 시도합니다. 새로운 단지의 검색과 조회는 시험 기능입니다. KB시세는 외부 중계 서버를 통한 비공식 조회이므로 실패하거나 지연될 수 있습니다. 주식 조회는 비공식 데이터 경로이므로 차단될 수 있으며 시세 지연 가능성이 있습니다. ETF는 Yahoo 시세 조회에 실패하면 네이버 모바일 공개 시세를 예비 조회합니다. 두 경로 모두 외부 중계의 접근 제한으로 실패할 수 있으며, 이 경우 종목명을 눌러 원본에서 확인할 수 있습니다. 거래소 시세는 투자 판단용 확정 가격이 아닙니다. 코인 시세는 화면이 열려 있는 동안 30초마다 새로 조회합니다. 로컬 파일 실행 시 브라우저 정책이나 네트워크에 따라 시세 요청이 차단될 수 있습니다.</p></main><script>
+const available={'KRW-BTC':{name:'비트코인',code:'BTC/KRW',type:'crypto'},'KRW-XRP':{name:'리플',code:'XRP/KRW',type:'crypto'},'USD-KRW':{name:'원·달러 환율',code:'USD/KRW · 일일 기준환율',type:'fx'},'JPY-KRW':{name:'100엔 환율',code:'JPY 100/KRW · 일일 기준환율',type:'fx'},'005930.KS':{name:'삼성전자',code:'005930 · KRX',type:'stock',currency:'KRW'},'000660.KS':{name:'SK하이닉스',code:'000660 · KRX',type:'stock',currency:'KRW'},'473460.KS':{name:'KODEX 미국서학개미',code:'473460 · KRX ETF',type:'stock',currency:'KRW'},'487240.KS':{name:'KODEX AI전력핵심설비',code:'487240 · KRX ETF',type:'stock',currency:'KRW'},'TSLA':{name:'테슬라',code:'TSLA · NASDAQ',type:'stock',currency:'USD'},'NVDA':{name:'엔비디아',code:'NVDA · NASDAQ',type:'stock',currency:'USD'},'GOOGL':{name:'알파벳',code:'GOOGL · NASDAQ',type:'stock',currency:'USD'}};
+function quoteUrl(id){if(id.startsWith('KRW-'))return 'https://upbit.com/exchange?code=CRIX.UPBIT.'+encodeURIComponent(id);if(id==='USD-KRW')return 'https://www.google.com/finance/quote/USD-KRW';if(id==='JPY-KRW')return 'https://www.google.com/finance/quote/JPY-KRW';if(id.endsWith('.KS'))return 'https://finance.naver.com/item/main.naver?code='+encodeURIComponent(id.split('.')[0]);if(available[id]?.type==='stock')return 'https://www.google.com/finance/quote/'+encodeURIComponent(id)+':NASDAQ';if(available[id]?.type==='apt')return available[id].kbUrl||'https://search.naver.com/search.naver?query='+encodeURIComponent(available[id].name+' 네이버 부동산');return null}
+
+// 이름 검색: 내장 한국 주식/ETF 및 인기 해외 주식 목록 + 업비트 공식 마켓 목록.
+// Yahoo 검색은 보조 경로이며, 중계 서버의 접근 제한으로 실패할 수 있습니다.
+const el=id=>document.getElementById(id);
+const searchCatalog=[
+['한미반도체','042700.KS','stock','KRW'],['삼성전자','005930.KS','stock','KRW'],['SK하이닉스','000660.KS','stock','KRW'],['KODEX 미국서학개미','473460.KS','stock','KRW'],['KODEX AI전력핵심설비','487240.KS','stock','KRW'],
+['KODEX 200','069500.KS','stock','KRW'],['TIGER 미국S&P500','360750.KS','stock','KRW'],['KODEX 미국S&P500','379800.KS','stock','KRW'],['KODEX 미국나스닥100','379810.KS','stock','KRW'],
+['현대차','005380.KS','stock','KRW'],['NAVER','035420.KS','stock','KRW'],['카카오','035720.KS','stock','KRW'],['LG에너지솔루션','373220.KS','stock','KRW'],['삼성바이오로직스','207940.KS','stock','KRW'],
+['애플','AAPL','stock','USD'],['테슬라','TSLA','stock','USD'],['엔비디아','NVDA','stock','USD'],['알파벳','GOOGL','stock','USD'],['구글','GOOGL','stock','USD'],['마이크로소프트','MSFT','stock','USD'],['아마존','AMZN','stock','USD'],['메타','META','stock','USD'],['팔란티어','PLTR','stock','USD'],['브로드컴','AVGO','stock','USD'],['AMD','AMD','stock','USD'],['넷플릭스','NFLX','stock','USD'],['SPY','SPY','stock','USD'],['QQQ','QQQ','stock','USD'],
+['비트코인','KRW-BTC','crypto','KRW'],['리플','KRW-XRP','crypto','KRW'],['이더리움','KRW-ETH','crypto','KRW'],['솔라나','KRW-SOL','crypto','KRW'],['도지코인','KRW-DOGE','crypto','KRW'],['에이다','KRW-ADA','crypto','KRW']
+];
+const normalizeSearch=s=>String(s).toLocaleLowerCase('ko-KR').replace(/[\s·_\-]/g,'');
+function registerSearchItem(item){const [name,id,type,currency]=item;if(!available[id])available[id]={name,code:type==='crypto'?id.slice(4)+'/KRW':id.endsWith('.KS')?id.slice(0,6)+' · KRX':id+' · 미국 주식',type,currency};if(!chosen.includes(id)){chosen.push(id);if(!Object.prototype.hasOwnProperty.call(custom,id))custom[id]=available[id];save();render();refresh();refreshStocks();el('searchResults').textContent=name+' 추가 완료!'}else el('searchResults').textContent='이미 등록된 종목이야.'}
+function showSearchMatches(matches,notice=''){const box=el('searchResults');box.replaceChildren();if(notice){const n=document.createElement('p');n.className='hint';n.textContent=notice;box.append(n)}if(!matches.length){const n=document.createElement('p');n.className='hint';n.textContent='검색 결과가 없어. 다른 이름으로 검색해 줘. 종목코드를 알면 아래 선택사항에서 직접 등록할 수 있어.';box.append(n);return}for(const item of matches.slice(0,20)){const b=document.createElement('button');b.className='action secondary';b.style.cssText='display:block;width:100%;margin-top:7px;text-align:left';b.textContent=item[0]+' · '+item[1];b.onclick=()=>registerSearchItem(item);box.append(b)}}
+async function searchByName(){const q=el('searchName').value.trim();if(!q){el('searchResults').textContent='검색할 이름을 입력해 줘.';return}if(el('searchCategory').value==='apt'){await searchApartments(q);return}const normalized=normalizeSearch(q);const found=new Map();for(const item of searchCatalog){if(normalizeSearch(item[0]).includes(normalized)||normalizeSearch(item[1]).includes(normalized))found.set(item[1],item)}for(const [id,d] of Object.entries(available)){if(normalizeSearch(d.name).includes(normalized)||normalizeSearch(id).includes(normalized))found.set(id,[d.name,id,d.type,d.currency||'KRW'])}showSearchMatches([...found.values()],found.size?'검색 결과를 눌러 추가해 줘.':'추가 검색 중…');
+try{const r=await fetch('https://api.upbit.com/v1/market/all?is_details=false');if(r.ok){const markets=await r.json();for(const m of markets){if(!m.market.startsWith('KRW-'))continue;if(normalizeSearch(m.korean_name).includes(normalized)||normalizeSearch(m.english_name).includes(normalized)||normalizeSearch(m.market).includes(normalized))found.set(m.market,[m.korean_name,m.market,'crypto','KRW'])}}}catch(e){console.warn('업비트 종목 검색 불가',e)}
+// 국내 주식·ETF 이름 검색: 네이버 자동완성 검색을 우선 시도 (비공식 공개 경로).
+try{
+ const u='https://ac.stock.naver.com/ac?q='+encodeURIComponent(q)+'&target=stock';
+ for(const endpoint of [u,'https://proxy.cors.dev/'+u]){
+  try{
+   const r=await fetch(endpoint,{cache:'no-store'});if(!r.ok)continue;
+   const j=await r.json();const groups=Array.isArray(j)?j:[j?.items,j?.result?.items,j?.stocks,j?.result?.stocks,j?.result?.[0]?.items];
+   for(const group of groups){if(!Array.isArray(group))continue;for(const x of group){
+    const name=String(x?.name??x?.stockName??x?.nm??x?.label??'').trim();
+    const raw=String(x?.code??x?.stockCode??x?.cd??x?.symbol??'').trim();
+    const code=(raw.match(/\b\d{6}\b/)||[])[0];
+    if(code&&name&&normalizeSearch(name).includes(normalized))found.set(code+'.KS',[name,code+'.KS','stock','KRW']);
+   }}
+   if(found.size)break;
+  }catch(e){console.warn('국내 검색 경로 불가',e)}
+ }
+}catch(e){console.warn('국내 종목 검색 불가',e)}
+// Yahoo Finance 공개 검색을 보조로 사용. 불가능하면 내장/업비트 검색만 제공.
+try{const url='https://query1.finance.yahoo.com/v1/finance/search?q='+encodeURIComponent(q)+'&quotesCount=8&newsCount=0';const r=await fetch('https://proxy.cors.dev/'+url);if(r.ok){const d=await r.json();for(const x of d.quotes||[]){const symbol=String(x.symbol||'').toUpperCase();if(!/^[A-Z0-9.^-]+$/.test(symbol)||!['EQUITY','ETF'].includes(x.quoteType))continue;const isKR=/\.(KS|KQ)$/.test(symbol);if(!isKR&&!/^[A-Z][A-Z0-9.-]{0,14}$/.test(symbol))continue;found.set(symbol,[x.shortname||x.longname||symbol,symbol,'stock',isKR?'KRW':'USD'])}}}catch(e){console.warn('외부 종목 검색 불가',e)}showSearchMatches([...found.values()],found.size?'검색 결과를 눌러 추가해 줘.':'검색 결과가 없어. 종목명을 확인하거나 아래 선택사항을 이용해 줘.');}
+// KB부동산 검색: 공개 검색 결과에서 단지 링크를 찾아 사용. 차단될 경우 링크 직접 입력.
+function aptNotice(message){const box=el('searchResults');box.replaceChildren();const p=document.createElement('p');p.className='hint';p.textContent=message;box.append(p);return box}
+function extractKbLinks(html){const urls=new Set();const decoded=html.replace(/\\u002F/g,'/').replace(/\\\//g,'/').replace(/&amp;/g,'&');for(const re of [/https?:\/\/kbland\.kr\/se\/c\/\d+/g,/kbland\.kr%2Fse%2Fc%2F\d+/gi,/kbland\.kr\/se\/c\/\d+/g]){for(const m of decoded.matchAll(re)){let x=m[0];if(x.includes('%2F'))x=decodeURIComponent(x);if(!x.startsWith('http'))x='https://'+x;urls.add(x)}}return [...urls]}
+async function searchApartments(q){
+ const box=aptNotice('전국 아파트 이름 검색 중…');
+ if(/^(https?:\/\/)?(www\.)?kbland\.kr\/se\/c\/\d+/i.test(q)){await chooseKbComplex(q.startsWith('http')?q:'https://'+q);return}
+ const known=[{name:'다산유승한내들센트럴',id:'31696',aliases:['유승한내들','다산유승']},{name:'e편한세상다산',id:'30798',aliases:['다산이편한세상','이편한세상다산','다산e편한세상']}];
+ const norm=normalizeSearch(q),found=new Map();
+ for(const k of known){if([k.name,...k.aliases].some(x=>normalizeSearch(x).includes(norm)||norm.includes(normalizeSearch(x))))found.set(k.id,{url:'https://kbland.kr/se/c/'+k.id,name:k.name,verified:true})}
+ const query='"'+q+'" "kbland.kr/se/c/"';
+ const sources=[
+  'https://www.google.com/search?q='+encodeURIComponent('site:kbland.kr/se/c/ '+q),
+  'https://www.bing.com/search?q='+encodeURIComponent('site:kbland.kr/se/c/ '+q),
+  'https://www.google.com/search?q='+encodeURIComponent(query),
+  'https://www.bing.com/search?q='+encodeURIComponent(query),
+  'https://www.google.com/search?q='+encodeURIComponent(q+' KB부동산 단지')
+ ];
+ const proxyUrl=(url,kind)=>kind==='cors'?'https://proxy.cors.dev/'+url:'https://api.allorigins.win/raw?url='+encodeURIComponent(url);
+ const jobs=sources.flatMap(url=>['cors','allorigins'].map(kind=>({url,kind})));
+ await Promise.all(jobs.map(async ({url,kind})=>{
+  try{const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),6500);
+   try{const r=await fetch(proxyUrl(url,kind),{cache:'no-store',signal:controller.signal});if(!r.ok)return;
+    const html=await r.text();for(const link of extractKbLinks(html)){const id=link.match(/\/c\/(\d+)/)?.[1];if(id&&!found.has(id))found.set(id,{url:'https://kbland.kr/se/c/'+id,name:'단지 확인 중',verified:false})}
+   }finally{clearTimeout(timeout)}
+  }catch(e){console.warn('검색 경로 제한',e.message)}
+ }));
+ const candidates=[...found.values()].slice(0,18);
+ await Promise.all(candidates.filter(x=>!x.verified).map(async x=>{
+  try{const records=await getKbRecords(x.url);const names=records.map(r=>r['단지명']||r['단지기본명']||r['아파트명']||r['단지명칭']).filter(v=>typeof v==='string'&&v.trim());
+   const name=names[0];if(name){x.name=name;x.verified=normalizeSearch(name).includes(norm)||norm.includes(normalizeSearch(name))}
+  }catch(e){console.warn('단지 검증 실패',e.message)}
+ }));
+ box.replaceChildren();
+ const matches=candidates.filter(x=>x.verified);
+ if(matches.length){const note=document.createElement('p');note.className='hint';note.textContent='단지를 선택하면 KB시세가 있는 전용면적만 표시해.';box.append(note);
+  for(const x of matches){const btn=document.createElement('button');btn.className='action secondary';btn.style.cssText='display:block;width:100%;text-align:left;margin-top:7px';btn.textContent='🏠 '+x.name;btn.onclick=()=>chooseKbComplex(x.url,x.name);box.append(btn)}
+ }
+ const link=document.createElement('a');link.href='https://www.google.com/search?q='+encodeURIComponent('site:kbland.kr/se/c/ '+q);link.target='_blank';link.rel='noopener noreferrer';link.className='apt-link';link.textContent='입력한 아파트명으로 KB부동산 단지 검색 ↗';box.append(link);
+ const inp=document.createElement('input');inp.placeholder='KB부동산 단지 링크 붙여넣기 (예비 방법)';inp.style.marginTop='10px';const btn=document.createElement('button');btn.className='action secondary';btn.style.marginTop='7px';btn.textContent='단지 링크로 조회';btn.onclick=()=>chooseKbComplex(inp.value.trim());box.append(inp,btn)
+}
+async function getKbRecords(url){let errors=[];for(const proxy of ['https://proxy.cors.dev/'+url,'https://api.allorigins.win/raw?url='+encodeURIComponent(url)]){try{const r=await fetch(proxy,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const records=kbRecords(await r.text());if(records.length)return records;errors.push('시세 레코드 없음')}catch(e){errors.push(e.message)}}throw Error(errors.join(' / '))}
+function kbAreaRows(records){
+ const out=new Map();
+ for(const r of records){
+  const a=Number(r['전용면적']);if(!(a>0&&a<300))continue;
+  const seq=String(r['면적일련번호']||'');
+  const supply=Number(r['공급면적']);
+  const key=seq||[a.toFixed(3),Number.isFinite(supply)?supply.toFixed(2):''].join('/');
+  const v=Number(r['매매일반거래가']),d=String(r['시세기준년월일']||'');
+  const valid=v>0&&/^20\d{6}$/.test(d);
+  if(!out.has(key))out.set(key,{seq,area:a,supply:Number.isFinite(supply)?supply:null,price:null,date:null});
+  const row=out.get(key);
+  if(valid&&(!row.date||d>row.date)){row.price=v*10000;row.date=d}
+ }
+ return [...out.values()].sort((a,b)=>a.area-b.area||(a.supply||0)-(b.supply||0));
+}
+async function chooseKbComplex(raw,selectedName){
+ const m=raw.match(/kbland\.kr\/se\/c\/(\d+)/);
+ if(!m){aptNotice('KB부동산 단지 주소를 입력해 줘.');return}
+ const kbId=m[1],url='https://kbland.kr/se/c/'+kbId;
+ aptNotice('단지 면적과 KB시세 조회 중…');
+ try{
+  const rows=kbAreaRows(await getKbRecords(url));
+  const pricedRows=rows.filter(row=>Number.isFinite(row.price)&&row.price>0);
+  const box=aptNotice(pricedRows.length?'KB시세가 확인된 면적 '+pricedRows.length+'개야.':'이 단지에서 확인된 KB 매매 일반가가 없어.');
+  for(const row of pricedRows){
+   const b=document.createElement('button');b.className='action secondary';
+   b.style.cssText='display:block;width:100%;margin-top:7px;text-align:left';
+   b.textContent='전용 '+row.area.toFixed(2)+'㎡'+(row.supply?' · 공급 '+row.supply.toFixed(2)+'㎡':'')+' · '+(row.price?(row.price/100000000).toLocaleString('ko-KR',{maximumFractionDigits:3})+'억 원':'KB시세 없음');
+   b.disabled=!row.price;
+   if(!row.price){b.style.opacity='.6';b.title='해당 면적의 매매 일반가 데이터가 확인되지 않았어'}
+   else b.onclick=()=>addKbApartment(kbId,url,row,selectedName);
+   box.append(b);
+  }
+ }catch(e){aptNotice('단지 조회 실패: '+e.message+' · 다른 단지 링크로 다시 시도해 줘.')}
+}
+function addKbApartment(kbId,url,row,selectedName){const id='APT-KB-'+kbId+'-'+(row.seq||row.area);if(chosen.includes(id)){aptNotice('이미 추가된 면적이야.');return}const name=selectedName||el('searchName').value.trim().replace(/^https?:.*$/,'')||'KB부동산 단지 '+kbId;const item={name,code:'전용 '+row.area.toFixed(2)+'㎡ · KB시세 매매 일반가',type:'apt',kbId,kbUrl:url,kbArea:row.area,kbAreaSeq:row.seq,sourceUrl:url};custom[id]=item;available[id]=item;chosen.push(id);aptPrices[id]={price:row.price,date:row.date.slice(0,4)+'.'+row.date.slice(4,6)+'.'+row.date.slice(6,8),checked:new Date().toISOString()};save();localStorage.setItem('mymarket_kb_prices_v23',JSON.stringify(aptPrices));render();aptNotice('🏠 '+name+' 전용 '+row.area.toFixed(2)+'㎡ 추가 완료! KB시세 자동 조회 대상이야.')}
+el('searchCategory').onchange=()=>{el('searchName').placeholder=el('searchCategory').value==='apt'?'예: 다산유승한내들센트럴':'예: 애플, KODEX 200, 이더리움';el('searchResults').replaceChildren()};
+el('searchButton').onclick=searchByName;el('searchName').onkeydown=e=>{if(e.key==='Enter')searchByName()};
+const customKey='mymarket_custom_v10';let custom={};try{custom=JSON.parse(localStorage.getItem(customKey))||{}}catch{};Object.assign(available,custom);const storageKey='mymarket_assets_v1';let chosen;try{const v=JSON.parse(localStorage.getItem(storageKey));chosen=Array.isArray(v)?[...new Set(v.filter(x=>available[x]))]:['KRW-BTC','KRW-XRP','USD-KRW','JPY-KRW','005930.KS','000660.KS','473460.KS','487240.KS','TSLA','NVDA','GOOGL']}catch{chosen=['KRW-BTC','KRW-XRP','USD-KRW','JPY-KRW','005930.KS','000660.KS','473460.KS','487240.KS','TSLA','NVDA','GOOGL']}
+if(!localStorage.getItem('mymarket_apt_migrated_v10')){const id='APT-DASAN-84';custom[id]={name:'다산유승한내들센트럴',code:'남양주시 다산동 · 전용 84㎡ · 직접 입력',type:'apt',manualPrice:1140000000,contractDate:'2026-10-10',priceChecked:'2026-10-20',sourceUrl:'https://kbland.kr/se/c/31696',kbUrl:'https://kbland.kr/se/c/31696'};available[id]=custom[id];chosen.push(id);localStorage.setItem('mymarket_apt_migrated_v10','1');localStorage.setItem(customKey,JSON.stringify(custom));localStorage.setItem(storageKey,JSON.stringify(chosen))}if(custom['APT-DASAN-84']){custom['APT-DASAN-84'].priceChecked='2026-10-20';custom['APT-DASAN-84'].sourceUrl='https://kbland.kr/se/c/31696';custom['APT-DASAN-84'].kbUrl='https://kbland.kr/se/c/31696';localStorage.setItem(customKey,JSON.stringify(custom))}let prices={};let stockErrors={};let aptLive=null;let aptError='조회 전';let aptPrices={};try{aptPrices=JSON.parse(localStorage.getItem('mymarket_kb_prices_v23')||'{}')}catch{};try{aptLive=JSON.parse(localStorage.getItem('mymarket_kb_31696_84')||'null')}catch{};function save(){localStorage.setItem(storageKey,JSON.stringify(chosen));localStorage.setItem(customKey,JSON.stringify(custom))}function render(){el('cards').replaceChildren();if(!chosen.length){const d=document.createElement('div');d.className='empty';d.textContent='종목을 추가해 주세요.';el('cards').append(d)}chosen.forEach((id,index)=>{const data=available[id],p=prices[id];const card=document.createElement('article');card.className='panel';const row=document.createElement('div');row.className='row';const left=document.createElement('div');const name=document.createElement('div');name.className='name';const url=quoteUrl(id);if(url){const link=document.createElement('a');link.className='name-link';link.href=url;link.target='_blank';link.rel='noopener noreferrer';link.title=data.name+(data.type==='apt'?' KB부동산 시세 페이지 열기':' 시세 페이지 새 창으로 열기');link.textContent=data.name;const mark=document.createElement('span');mark.className='external-mark';mark.textContent='↗';mark.setAttribute('aria-hidden','true');link.append(mark);name.append(link)}else{name.textContent=data.name;}const code=document.createElement('div');code.className='code';code.textContent=data.code;left.append(name,code);const del=document.createElement('button');del.className='remove';del.textContent='×';del.setAttribute('aria-label',data.name+' 삭제');del.onclick=()=>{chosen=chosen.filter(x=>x!==id);save();render()};const controls=document.createElement('div');controls.className='move-controls';const up=document.createElement('button');up.className='move-btn';up.textContent='↑';up.title=data.name+' 위로 이동';up.setAttribute('aria-label',data.name+' 위로 이동');up.disabled=index===0;up.onclick=()=>{if(index===0)return;[chosen[index-1],chosen[index]]=[chosen[index],chosen[index-1]];save();render()};const down=document.createElement('button');down.className='move-btn';down.textContent='↓';down.title=data.name+' 아래로 이동';down.setAttribute('aria-label',data.name+' 아래로 이동');down.disabled=index===chosen.length-1;down.onclick=()=>{if(index===chosen.length-1)return;[chosen[index+1],chosen[index]]=[chosen[index],chosen[index+1]];save();render()};controls.append(up,down,del);row.append(left,controls);const price=document.createElement('div');price.className='price';price.textContent=data.type==='apt'?(id==='APT-DASAN-84'?(aptLive?Math.round(aptLive.price).toLocaleString('ko-KR')+'원':'KB시세 조회 중'):(aptPrices[id]?Math.round(aptPrices[id].price).toLocaleString('ko-KR')+'원':data.kbId?'KB시세 조회 중':data.manualPrice?Math.round(data.manualPrice).toLocaleString('ko-KR')+'원':'가격 미입력')):p?(data.type==='fx'?p.price.toLocaleString('ko-KR',{minimumFractionDigits:2,maximumFractionDigits:2})+'원':data.type==='stock'?p.price.toLocaleString('ko-KR',{minimumFractionDigits:data.currency==='USD'?2:0,maximumFractionDigits:data.currency==='USD'?2:0})+(data.currency==='USD'?'달러':'원'):Math.round(p.trade_price).toLocaleString('ko-KR')+'원'):'시세 확인 중';const diff=document.createElement('div');diff.className='muted';if(data.type==='apt'){diff.textContent=(id==='APT-DASAN-84'?(aptLive?'KB시세 매매 일반가 · 기준일 '+aptLive.date+(aptError?' · 갱신 실패':''):'KB시세 조회 중'+(aptError?' · '+aptError:'')):data.kbId?(aptPrices[id]?'KB시세 매매 일반가 · 기준일 '+aptPrices[id].date+(aptErrors[id]?' · 갱신 실패':''):'KB시세 조회 중'+(aptErrors[id]?' · '+aptErrors[id]:'')):'직접 입력 · 자동 갱신 아님')}else if(p&&data.type==='fx'){diff.textContent='일일 기준환율 · 기준일 '+p.date}else if(p){const rate=data.type==='stock'?p.changeRate:p.signed_change_rate*100;diff.className=rate>0?'rise':rate<0?'fall':'muted';diff.textContent=(rate>0?'+':'')+rate.toFixed(2)+'% · '+(data.type==='stock'?'전일 대비 · 지연 가능 · '+p.time:'전일 대비')}else diff.textContent=data.type==='stock'?(stockErrors[id]?'조회 실패 ('+stockErrors[id]+') · 이름을 눌러 원본 확인':'조회 중 / 조회 불가 시 원본 링크 이용'):'—';card.append(row,price);if(data.type==='apt'&&data.sourceUrl){const src=document.createElement('a');src.href=id==='APT-DASAN-84'?'https://kbland.kr/se/c/31696':data.sourceUrl;src.target='_blank';src.rel='noopener noreferrer';src.className='apt-link';src.textContent='KB부동산에서 최신 시세 확인 ↗';card.append(src)}
+if(data.type==='stock'&&data.currency==='USD'){
+ const converted=document.createElement('div');converted.className='krw-converted';
+ const fx=prices['USD-KRW'];
+ if(p&&fx&&Number.isFinite(fx.price)){
+  converted.textContent='≈ '+Math.round(p.price*fx.price).toLocaleString('ko-KR')+'원 / 1주';
+  const note=document.createElement('div');note.className='krw-note';note.textContent='적용 환율 '+fx.price.toLocaleString('ko-KR',{minimumFractionDigits:2,maximumFractionDigits:2})+'원 · 기준일 '+fx.date+' · 환산 참고값';
+  card.append(converted,note);
+ }else{converted.textContent='원화 환산 대기 중';card.append(converted)}
+}
+if(data.type==='crypto'){
+ const converted=document.createElement('div');converted.className='usd-converted';
+ const fx=prices['USD-KRW'];
+ if(p&&Number.isFinite(p.trade_price)&&fx&&Number.isFinite(fx.price)&&fx.price>0){
+  const usd=p.trade_price/fx.price;
+  converted.textContent='≈ '+usd.toLocaleString('en-US',{style:'currency',currency:'USD',minimumFractionDigits:2,maximumFractionDigits:2})+' / 1개';
+  const note=document.createElement('div');note.className='krw-note';
+  note.textContent='적용 환율 1달러 = '+fx.price.toLocaleString('ko-KR',{minimumFractionDigits:2,maximumFractionDigits:2})+'원 · 기준일 '+fx.date+' · 환산 참고값 (해외 거래소 달러 시세 아님)';
+  card.append(converted,note);
+ }else{converted.textContent='달러 환산 대기 중 (원·달러 환율 조회 필요)';card.append(converted)}
+}
+card.append(diff);el('cards').append(card)})}
+el('reload').onclick=async()=>{el('status').textContent='새로고침 중…';await Promise.allSettled([refresh(),refreshFx(),refreshStocks(),refreshKb(),refreshOtherKb()]);el('status').textContent='새로고침 완료 · '+new Date().toLocaleTimeString('ko-KR')};
+const typeEl=el('customType');typeEl.onchange=()=>{const isApt=typeEl.value==='apt';el('aptExtra').style.display=isApt?'grid':'none';el('customCode').style.display=isApt?'none':'block';el('customCodeLabel').style.display=isApt?'none':'block';el('customCode').placeholder=typeEl.value==='stockKR'?'예: 069500':typeEl.value==='stockUS'?'예: AAPL':'예: ETH'};
+el('addCustom').onclick=()=>{const type=typeEl.value;const name=el('customName').value.trim();const code=el('customCode').value.trim().toUpperCase();const msg=el('formMessage');msg.textContent='';if(!name){msg.textContent='이름을 입력해 줘.';return}let id,item;if(type==='apt'){const area=el('aptArea').value.trim();const raw=el('aptPrice').value.replace(/[,\s]/g,'');if(raw&&!/^\d+$/.test(raw)){msg.textContent='가격은 숫자로 입력해 줘.';return}id='APT-'+Date.now();item={name,code:(area?'전용 '+area+'㎡ · ':'')+'직접 입력',type:'apt',manualPrice:raw?Number(raw):null,contractDate:el('aptDate').value}}else if(type==='stockKR'){if(!/^\d{6}$/.test(code)){msg.textContent='국내 주식·ETF 코드는 숫자 6자리야.';return}id=code+'.KS';item={name,code:code+' · KRX',type:'stock',currency:'KRW'}}else if(type==='stockUS'){if(!/^[A-Z][A-Z0-9.-]{0,14}$/.test(code)){msg.textContent='미국 종목 티커를 확인해 줘.';return}id=code;item={name,code:code+' · 미국 주식',type:'stock',currency:'USD'}}else{if(!/^[A-Z0-9]{2,15}$/.test(code)){msg.textContent='업비트 코인 심볼을 입력해 줘. 예: ETH';return}id='KRW-'+code;item={name,code:code+'/KRW',type:'crypto'}}if(chosen.includes(id)){msg.textContent='이미 목록에 있는 종목이야.';return}custom[id]=item;available[id]=item;chosen.push(id);save();el('customName').value='';el('customCode').value='';msg.textContent='추가했어!';render();refresh();refreshStocks()};
+let busy=false;async function refresh(){if(busy)return;busy=true;try{const markets=chosen.filter(id=>available[id]?.type==='crypto');if(!markets.length){busy=false;return}const r=await fetch('https://api.upbit.com/v1/ticker?markets='+encodeURIComponent(markets.join(',')),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const data=await r.json();for(const item of data)prices[item.market]=item;el('status').textContent='코인 갱신: '+new Date().toLocaleTimeString('ko-KR')}catch(e){el('status').textContent='시세 연결 실패 · 인터넷 연결 또는 브라우저 제한을 확인해 주세요'}finally{busy=false;render()}}async function refreshFx(){try{const r=await fetch('https://open.er-api.com/v6/latest/USD',{cache:'no-store'});if(!r.ok)throw Error('환율 오류');const d=await r.json();if(d.result!=='success'||!d.rates?.KRW||!d.rates?.JPY)throw Error('환율 누락');const date=new Date(d.time_last_update_unix*1000).toLocaleDateString('ko-KR');prices['USD-KRW']={price:d.rates.KRW,date};prices['JPY-KRW']={price:100*d.rates.KRW/d.rates.JPY,date};render()}catch(e){console.warn('환율 갱신 실패',e)}}async function yahooQuote(id){
+ const u='https://query1.finance.yahoo.com/v8/finance/chart/'+encodeURIComponent(id)+'?range=5d&interval=1d';
+ const r=await fetch('https://proxy.cors.dev/'+u,{cache:'no-store'});
+ if(!r.ok)throw Error('Yahoo HTTP '+r.status);
+ const j=await r.json();const result=j?.chart?.result?.[0];const m=result?.meta;
+ let price=Number(m?.regularMarketPrice);const closes=result?.indicators?.quote?.[0]?.close?.filter(x=>Number.isFinite(x))||[];
+ if(!Number.isFinite(price)&&closes.length)price=closes[closes.length-1];
+ let prev=Number(m?.chartPreviousClose??m?.previousClose);
+ if((!Number.isFinite(prev)||prev<=0)&&closes.length>=2)prev=closes[closes.length-2];
+ if(!Number.isFinite(price)||price<=0)throw Error('Yahoo 가격 없음');
+ return {price,changeRate:Number.isFinite(prev)&&prev>0?(price-prev)/prev*100:0,time:new Date().toLocaleTimeString('ko-KR')+' · Yahoo 참고'};
+}
+async function naverEtfQuote(id){
+ const code=id.split('.')[0];
+ // 모든 국내 주식과 ETF에 대해 Yahoo 실패 시 네이버 공개 시세를 예비 조회한다.
+ const u='https://m.stock.naver.com/api/stock/'+code+'/basic';
+ let j=null;let lastError='';for(const endpoint of ['https://proxy.cors.dev/'+u,'https://api.allorigins.win/raw?url='+encodeURIComponent(u)]){try{const r=await fetch(endpoint,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);j=await r.json();break}catch(e){lastError=e.message}}if(!j)throw Error('Naver 연결 실패: '+lastError);
+ const raw=j?.closePrice??j?.nowVal??j?.currentPrice;
+ const price=Number(String(raw??'').replace(/,/g,''));
+ const rateRaw=j?.fluctuationsRatio??j?.compareToPreviousClosePriceRatio;
+ const rate=Number(String(rateRaw??'').replace(/[,%+]/g,''));
+ if(!Number.isFinite(price)||price<=0)throw Error('Naver 가격 없음');
+ return {price,changeRate:Number.isFinite(rate)?rate:0,time:new Date().toLocaleTimeString('ko-KR')+' · 네이버 참고'};
+}
+async function refreshStocks(){const ids=chosen.filter(id=>available[id]?.type==='stock');await Promise.all(ids.map(async id=>{
+  try{
+   let quote;
+   try{quote=await yahooQuote(id)}catch(firstError){
+    if(/\.(KS|KQ)$/.test(id))quote=await naverEtfQuote(id);
+    else throw firstError;
+   }
+   prices[id]=quote;delete stockErrors[id];
+  }catch(e){stockErrors[id]=e.message;console.warn(id,'주식 시세 조회 불가:',e.message)}finally{render()}
+ }))}
+function kbRecords(html){const found=[];for(const pattern of ['{\\"단지기본일련번호\\":','{"단지기본일련번호":']){let pos=0;while(true){let start=html.indexOf(pattern,pos);if(start<0)break;let depth=0,quoted=false,escaped=false,end=start;for(;end<html.length;end++){const ch=html[end];if(escaped){escaped=false;continue}if(ch==='\\'){escaped=true;continue}if(ch==='"'){quoted=!quoted;continue}if(!quoted){if(ch==='{')depth++;if(ch==='}'){depth--;if(depth===0){end++;break}}}}if(end<=start){pos=start+pattern.length;continue}let raw=html.slice(start,end).replace(/\\"/g,'"');try{const o=JSON.parse(raw);if(o['단지기본일련번호']!==undefined)found.push(o)}catch{}pos=Math.max(end,start+pattern.length)}}return found}
+
+let kbBusy=false;let aptErrors={};
+async function refreshKb(){if(kbBusy)return;kbBusy=true;aptError='';const target='https://kbland.kr/se/c/31696';const urls=['https://proxy.cors.dev/'+target,'https://api.allorigins.win/raw?url='+encodeURIComponent(target)];let errors=[];try{for(const url of urls){try{const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const records=kbRecords(await r.text());const valid=records.filter(x=>{const area=Number(x['전용면적']);const amount=Number(x['매매일반거래가']);return area>=83.9&&area<=84.2&&Number.isFinite(amount)&&amount>0&&Number.isFinite(Number(x['시세기준년월일']))});valid.sort((a,b)=>Number(b['시세기준년월일'])-Number(a['시세기준년월일']));if(!valid.length){errors.push('84㎡ KB시세 레코드 없음');continue}const record=valid[0];const v=Number(record['매매일반거래가']);const d=String(record['시세기준년월일']);aptLive={price:v*10000,date:d.slice(0,4)+'.'+d.slice(4,6)+'.'+d.slice(6,8),checked:new Date().toISOString()};localStorage.setItem('mymarket_kb_31696_84',JSON.stringify(aptLive));aptError='';return}catch(e){errors.push(e.message)}}aptError=errors.join(' / ')||'데이터 없음'}finally{kbBusy=false;render()}}
+
+async function refreshOtherKb(){const ids=chosen.filter(id=>available[id]?.kbId);await Promise.all(ids.map(async id=>{const data=available[id];try{const rows=kbAreaRows(await getKbRecords(data.kbUrl));const row=rows.find(r=>data.kbAreaSeq&&r.seq===data.kbAreaSeq)||rows.find(r=>Math.abs(r.area-data.kbArea)<0.03);if(!row)throw Error('해당 면적 시세 없음');aptPrices[id]={price:row.price,date:row.date.slice(0,4)+'.'+row.date.slice(4,6)+'.'+row.date.slice(6,8),checked:new Date().toISOString()};delete aptErrors[id];localStorage.setItem('mymarket_kb_prices_v23',JSON.stringify(aptPrices))}catch(e){aptErrors[id]=e.message}finally{render()}}))}
+render();refresh();refreshFx();refreshStocks();refreshKb();refreshOtherKb();setInterval(refreshKb,86400000);setInterval(refreshOtherKb,86400000);setInterval(refresh,30000);setInterval(refreshFx,3600000);setInterval(refreshStocks,300000);
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(console.warn);</script></body></html>
