@@ -227,9 +227,6 @@ async function searchApartments(q){
  const link=document.createElement('a');link.href='https://www.google.com/search?q='+encodeURIComponent('site:kbland.kr/se/c/ '+q);link.target='_blank';link.rel='noopener noreferrer';link.className='apt-link';link.textContent='크롬에서 KB부동산 단지 검색 열기 ↗';
  link.addEventListener('click',e=>{if(/Android/i.test(navigator.userAgent)){e.preventDefault();openApartmentSearchInBrowser(link.href)}});
  box.append(link);
- const urlLabel=document.createElement('div');urlLabel.className='hint';urlLabel.textContent='검색 페이지 주소 (선택 가능)';
- const urlField=document.createElement('input');urlField.type='text';urlField.readOnly=true;urlField.value=link.href;urlField.setAttribute('aria-label','검색 페이지 URL');urlField.style.marginTop='5px';urlField.addEventListener('focus',()=>urlField.select());
- box.append(urlLabel,urlField);
  const inp=document.createElement('input');inp.placeholder='KB부동산 단지 링크 붙여넣기 (예비 방법)';inp.style.marginTop='10px';const btn=document.createElement('button');btn.className='action secondary';btn.style.marginTop='7px';btn.textContent='단지 링크로 조회';btn.onclick=()=>chooseKbComplex(inp.value.trim());box.append(inp,btn)
 }
 async function getKbRecords(url){let errors=[];for(const proxy of ['https://proxy.cors.dev/'+url,'https://api.allorigins.win/raw?url='+encodeURIComponent(url)]){try{const r=await fetch(proxy,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const records=kbRecords(await r.text());if(records.length)return records;errors.push('시세 레코드 없음')}catch(e){errors.push(e.message)}}throw Error(errors.join(' / '))}
